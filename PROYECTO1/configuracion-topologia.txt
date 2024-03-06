@@ -37,3 +37,35 @@ enable
 	wr
 	
 	show startup-config
+
+## Configuración de VLANs
+enable
+	configure terminal
+	vlan 10
+	name "nombre"
+	exit
+	vlan 20
+	name "nombre"
+	exit
+	exit
+	wr
+	
+	show vlan
+
+
+## Configuracion de los puntos de acceso
+enable
+	configure terminal
+	interface f0/11
+	switchport mode access
+	switchport access vlan 10
+	no shutdown
+	exit
+	exit
+	wr
+
+
+
+
+
+
