@@ -1,0 +1,26 @@
+
+# Configurando el servidor (SW1)
+enable
+	configure terminal
+	vtp mode server
+	
+	vtp domain P31
+	vtp password usac
+	vtp version 2
+	exit
+	wr
+
+# Ver estado del vtp
+show vtp status
+
+# Configurando modo clientes
+enable
+	configure terminal
+	vtp mode client
+
+	vtp domain P31
+	vtp password usac
+	exit
+	wr
+	
+	show vtp status
