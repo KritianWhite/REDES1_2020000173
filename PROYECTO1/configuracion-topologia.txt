@@ -24,3 +24,16 @@ enable
 	wr
 	
 	show vtp status
+
+# Establecer en modo trunkal menos el SW9
+enable
+	configure terminal
+	interface range f0/rango
+	switchport trunk encapsulation dot1q # Para los de capa 3
+	switchport mode trunk
+	switchport trunk allowed vlan all
+	exit
+	exit
+	wr
+	
+	show startup-config
