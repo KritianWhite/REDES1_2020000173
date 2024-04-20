@@ -1,33 +1,33 @@
-######################R2################################
+###################### R2 ###############################
 enable
 conf t
-no ip-domain-lookup
+no ip domain-lookup
 hostname R2
 
-int f0/1
+interface f0/1
 ip add 132.168.0.2 255.255.255.0
 standby 11 ip 132.168.0.1
 standby 11 priority 150
 standby 11 preempt
-no shut
+no shutdown
 do w
 
-int f0/0
+interface f0/0
 ip add 132.168.1.1 255.255.255.248
-no shut
+no shutdown
 do w
 
 
 ###################### R3 ##############################
 enable
-conf t
+configure terminal
 no ip domain-lookup
 hostname R3
 
-
-int f0/1
+interface f0/1
 ip add 132.168.0.3 255.255.255.0
-no shut
+standby 11 ip 132.168.0.1
+no shutdown
 do w
 exit
 
@@ -41,23 +41,24 @@ do w
 
 ###################### R5 ################################
 enable
-conf t
-no ip-domain-lookup
+configure terminal
+no ip domain-lookup
 hostname R5
 
-int f0/1
+interface f0/1
 ip add 132.178.0.2 255.255.255.0
 standby 12 ip 132.178.0.1
 standby 12 priority 150
 standby 12 preempt
-no shut
+no shutdown
 exit
 
-int f0/0
+interface f0/0
 ip add 132.178.1.2 255.255.255.248
-no shut
+no shutdown
 do w
 
+--->>> me quedé aquí
 
 ###################### R6 ##############################
 enable
@@ -68,6 +69,7 @@ hostname R6
 
 int f0/1
 ip add 132.178.0.3 255.255.255.0
+standby 12 ip 132.178.0.1
 no shut
 exit
 
@@ -122,7 +124,7 @@ no shut
 
 do w
 
-
+-------
 ######################### R1 ip estatica ####################
 
 enable
@@ -203,7 +205,7 @@ do w
 ######################### Switch 0#############################
 enable
 conf t
-int range fa0/2-3
+int range fa0/1-2
 channel-protocol pagp
 channel-group 1 mode desirable
 do w
@@ -212,7 +214,7 @@ do w
 ######################### Switch 1#############################
 enable
 conf t
-int range fa0/1-2
+int range fa0/3-4
 channel-protocol pagp
 channel-group 1 mode desirable
 do w
@@ -220,7 +222,7 @@ do w
 ######################### Switch 2#############################
 enable
 conf t
-int range fa0/4-5
+int range fa0/3-4
 channel-protocol lacp
 channel-group 1 mode active
 do w
@@ -229,7 +231,7 @@ do w
 ######################### Switch 3#############################
 enable
 conf t
-int range fa0/4-5
+int range fa0/1-2
 channel-protocol lacp
 channel-group 1 mode active
 do w
@@ -239,3 +241,13 @@ do w
 
 ip:132.168.0.4 maks:255.255.255.0 gateway:132.168.0.1
 ip:132.178.0.4 maks:255.255.255.0 gateway:132.178.0.1
+
+
+
+######################## mostrar chivas ###############
+hsrp
+enable
+show standby
+
+
+
