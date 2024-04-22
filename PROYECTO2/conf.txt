@@ -1,0 +1,170 @@
+###################### CONFIGURACION DE VLANS (ESW1) ########################
+
+## MODO SERVER
+enable
+	conf t
+	vtp mode server
+	
+	vtp domain P31
+	vtp password usac
+	vtp version 2
+	exit
+	wr
+
+## CREACION DE VLANS (RRHH, CONTABILIDAD, VENTAS, INFORMATICA)
+enable
+	conf t
+	vlan 13
+	name RRHH
+	exit
+
+	vlan 23
+	name CONTABILIDAD
+	exit
+
+	vlan 33
+	name VENTAS
+	exit
+
+	vlan 43
+	name INFORMATICA
+	exit
+	do wr
+
+## ASIGNACION DE INTERFACES FISICAS A LA VLAN
+enable
+	conf t
+	int range fa0/1-4
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	switchport trunk allowed vlan all
+	exit 
+	exit 
+	wr
+
+enable
+	configure terminal
+	interface vlan 33
+	ip address 192.168.33.1 255.255.255.224
+	no shutdown
+	exit
+
+	interface vlan 43
+	ip address 192.168.33.33 255.255.255.240
+	no shutdown
+	exit
+
+	interface vlan 13
+	ip address 192.168.33.49 255.255.255.240
+	no shutdown
+	exit
+
+	interface vlan 23
+	ip address 192.168.33.65 255.255.255.248
+	no shutdown
+	exit
+	do wr
+
+## CONFIGURACION DEL SPANNING TREE PROTOCOL
+enable
+	configure terminal
+	spanning-tree vlan 1 root primary
+	exit
+	wr
+
+## CONFIGURACION DEL PVST
+enable
+	configure terminal
+	spanning-tree mode rapid-pvst
+	exit
+	wr
+
+###################### CONFIGURACIONES SW2 Y SW3  #####################
+
+## CONFIGURAR SWITCHES DE CAPA 2 EN MODO CLIENTE (SW2 Y SW3)
+enable
+	configure terminal
+	vtp mode client
+
+	vtp domain P31
+	vtp password usac
+	exit
+	wr
+
+## CONFIGURAR INTERFACES SW3
+
+enable
+	conf t
+	interface f0/10
+	switchport mode access
+	switchport access vlan 23
+	no shutdown
+	exit
+
+	interface f0/11
+	switchport mode access
+	switchport access vlan 33
+	no shutdown
+	exit
+
+	interface f0/12
+	switchport mode access
+	switchport access vlan 43
+	no shutdown
+	exit
+	exit
+	wr
+	show running-config
+
+## CONFIGURAR INTERFACES SW2
+
+enable
+	conf t
+	interface f0/10
+	switchport mode access
+	switchport access vlan 33
+	no shutdown
+	exit
+	
+	interface f0/11
+	switchport mode access
+	switchport access vlan 43
+	no shutdown
+	exit
+
+	interface f0/12
+	switchport mode access
+	switchport access vlan 13
+	no shutdown
+	exit
+	exit
+	wr
+	show running-config
+
+## CONFIGURAR EN MODO TRUNK PARA SW2 Y SW3
+enable
+	configure terminal
+	interface range f0/2-3
+	switchport mode trunk
+	switchport trunk allowed vlan all
+	exit
+	exit
+	wr
+
+## CONFIGURAR EL LACP
+enable
+	configure terminal
+	interface range fa0/2-3
+	channel-group 2 mode active
+	exit
+	interface port-channel 2
+	switchport mode trunk
+	end
+	wr
+
+## CONFIGURACION DEL PVST (SW2 Y SW3)
+enable
+	configure terminal
+	spanning-tree mode rapid-pvst
+	exit
+	wr
