@@ -1,4 +1,5 @@
-###################### CONFIGURACION DE VLANS (ESW1) ########################
+###################### JUTIAPA ######################
+## CONFIGURACION DE VLANS (ESW1) ##
 
 ## MODO SERVER
 enable
@@ -79,7 +80,7 @@ enable
 	exit
 	wr
 
-###################### CONFIGURACIONES SW2 Y SW3  #####################
+## CONFIGURACIONES SW2 Y SW3  ##
 
 ## CONFIGURAR SWITCHES DE CAPA 2 EN MODO CLIENTE (SW2 Y SW3)
 enable
